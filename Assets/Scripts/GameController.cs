@@ -19,13 +19,12 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            for (int i = 0; i < hazardCount; i++)
-            {
+ 
                 Vector2 spawnPosition = new Vector2(Random.Range(-spawnValues.x, spawnValues.x), Random.Range(-spawnValues.y, spawnValues.y));
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(hazard, spawnPosition, spawnRotation);
                 yield return new WaitForSeconds(spawnWait);
-            }
+
         }
     }
 }
