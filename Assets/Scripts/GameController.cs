@@ -3,14 +3,21 @@ using System.Collections;
 
 public class GameController : MonoBehaviour
 {
-    public GameObject hazard;
+    public GameObject srite2Duplicate;
     public Vector2 spawnValues;
-    public int hazardCount;
-    public float spawnWait;
+    public int hitCount;
     public float startWait;
+    public float spawnWait;
+    public float destroyWait;
+
+    
+
+
+    private GameObject sprite2Hit;
 
     void Start()
     {
+        hitCount = 0;
         StartCoroutine(SpawnWaves());
     }
 
@@ -18,13 +25,13 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(startWait);
         while (true)
-        {
- 
+        { 
                 Vector2 spawnPosition = new Vector2(Random.Range(-spawnValues.x, spawnValues.x), Random.Range(-spawnValues.y, spawnValues.y));
                 Quaternion spawnRotation = Quaternion.identity;
-                Instantiate(hazard, spawnPosition, spawnRotation);
-                yield return new WaitForSeconds(spawnWait);
-
+            sprite2Hit = Instantiate(srite2Duplicate, spawnPosition, spawnRotation) as GameObject;
+            yield return new WaitForSeconds(destroyWait);
+            Destroy(sprite2Hit);
+            yield return new WaitForSeconds(spawnWait);
         }
     }
 }
