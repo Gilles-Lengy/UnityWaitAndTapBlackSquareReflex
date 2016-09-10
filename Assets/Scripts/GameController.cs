@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -9,16 +10,41 @@ public class GameController : MonoBehaviour
     public float startWait;
     public float spawnWait;
     public float destroyWait;
+    public Text textHitCount;
+    private string strScore;
 
-    
+
+
 
 
     private GameObject sprite2Hit;
 
     void Start()
     {
+        strScore = "Score : ";
         hitCount = 0;
+        setHitText();
+
         StartCoroutine(SpawnWaves());
+    }
+
+    void Update()
+    {
+
+        for (int i = 0; i < Input.touchCount; ++i)
+        {
+
+            if (Input.GetTouch(i).phase == TouchPhase.Began) {
+
+                Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+                if (sprite2Hit.GetComponent<Collider2D>().OverlapPoint(wp))
+                {
+                    hitCount++;
+                    setHitText();
+                    Destroy(sprite2Hit);
+                }
+                }
+        }
     }
 
     IEnumerator SpawnWaves()
@@ -33,5 +59,11 @@ public class GameController : MonoBehaviour
             Destroy(sprite2Hit);
             yield return new WaitForSeconds(spawnWait);
         }
+    }
+
+
+    void setHitText()
+    {
+        textHitCount.text = strScore + hitCount.ToString();
     }
 }
