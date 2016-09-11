@@ -7,12 +7,14 @@ public class GameController : MonoBehaviour
     public GameObject srite2Duplicate;
     public Vector2 spawnValues;
     public int hitCount;
+
     public float startWait;
     public float spawnWait;
     public float destroyWait;
     public Text textHitCount;
 
     private string strScore;
+    private int sprite2HitCount;
 
 
     /* Timer */ // http://mafabrique2jeux.fr/blog-fabriquer-jeu-video/20-tutoriels-fr-unity3d/55-timer-unity3d
@@ -42,6 +44,7 @@ public class GameController : MonoBehaviour
         elapsedTimeTotal= 0F;
         strScore = "Score : ";
         hitCount = 0;
+        sprite2HitCount = 0;
         setHitText();
         textElapsedTimeTotal.text = elapsedTimeTotal.ToString();
 
@@ -99,6 +102,34 @@ public class GameController : MonoBehaviour
             sprite2Hit = Instantiate(srite2Duplicate, spawnPosition, spawnRotation) as GameObject;
             timerOn = true;
             startTime = Time.time; // on note le startTime
+            sprite2HitCount++;
+            switch (sprite2HitCount) {
+                case 1:
+                    destroyWait = 1F;
+                    break;
+                case 3:
+                    destroyWait = 0.9F;
+                    break;
+                case 6:
+                    destroyWait = 0.8F;
+                    break;
+                case 9:
+                    destroyWait = 0.7F;
+                    break;
+                case 12:
+                    destroyWait = 0.6F;
+                    break;
+                case 15:
+                    destroyWait = 0.5F;
+                    break;
+                case 24:
+                    destroyWait = 0.4F;
+                    break;
+                case 27:
+                    destroyWait = 0.3F;
+                    break;
+
+            }
             yield return new WaitForSeconds(destroyWait);
             Destroy(sprite2Hit);
             timerOn = false;
