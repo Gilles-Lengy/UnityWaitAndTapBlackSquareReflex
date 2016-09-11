@@ -11,7 +11,22 @@ public class GameController : MonoBehaviour
     public float spawnWait;
     public float destroyWait;
     public Text textHitCount;
+
     private string strScore;
+
+
+    /* Timer */ // http://mafabrique2jeux.fr/blog-fabriquer-jeu-video/20-tutoriels-fr-unity3d/55-timer-unity3d
+    public Text textTimer;
+    public float startTime;
+    public float elapsedTime;
+
+    /*** pour le formatage ****/
+   /* private float minutes;
+    private float seconds;
+    private float centiems;
+    */
+
+    private bool timerOn;
 
 
 
@@ -21,6 +36,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        timerOn = false;
         strScore = "Score : ";
         hitCount = 0;
         setHitText();
@@ -30,6 +46,25 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+
+        if (timerOn)
+        {
+            //le temps écoulé = temps actuel - start time
+            elapsedTime = Time.time - startTime;
+
+            //formatage
+            /*
+            minutes = elapsedTime / 60;
+            seconds = elapsedTime % 60;
+            centiems = (elapsedTime * 100) % 1000;
+            */
+
+
+            textTimer.text = elapsedTime.ToString();
+        }
+        else {
+            textTimer.text = "Wait...";
+        }
 
         for (int i = 0; i < Input.touchCount; ++i)
         {
@@ -55,8 +90,11 @@ public class GameController : MonoBehaviour
                 Vector2 spawnPosition = new Vector2(Random.Range(-spawnValues.x, spawnValues.x), Random.Range(-spawnValues.y, spawnValues.y));
                 Quaternion spawnRotation = Quaternion.identity;
             sprite2Hit = Instantiate(srite2Duplicate, spawnPosition, spawnRotation) as GameObject;
+            timerOn = true;
+            startTime = Time.time; // on note le startTime
             yield return new WaitForSeconds(destroyWait);
             Destroy(sprite2Hit);
+            timerOn = false;
             yield return new WaitForSeconds(spawnWait);
         }
     }
