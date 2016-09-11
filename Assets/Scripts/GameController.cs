@@ -17,14 +17,16 @@ public class GameController : MonoBehaviour
 
     /* Timer */ // http://mafabrique2jeux.fr/blog-fabriquer-jeu-video/20-tutoriels-fr-unity3d/55-timer-unity3d
     public Text textTimer;
+    public Text textElapsedTimeTotal;
     public float startTime;
     public float elapsedTime;
+    public float elapsedTimeTotal;
 
     /*** pour le formatage ****/
-   /* private float minutes;
-    private float seconds;
-    private float centiems;
-    */
+    /* private float minutes;
+     private float seconds;
+     private float centiems;
+     */
 
     private bool timerOn;
 
@@ -37,9 +39,11 @@ public class GameController : MonoBehaviour
     void Start()
     {
         timerOn = false;
+        elapsedTimeTotal= 0F;
         strScore = "Score : ";
         hitCount = 0;
         setHitText();
+        textElapsedTimeTotal.text = elapsedTimeTotal.ToString();
 
         StartCoroutine(SpawnWaves());
     }
@@ -77,6 +81,9 @@ public class GameController : MonoBehaviour
                     hitCount++;
                     setHitText();
                     Destroy(sprite2Hit);
+                    elapsedTimeTotal += elapsedTime;
+                    timerOn = false;
+                    textElapsedTimeTotal.text = elapsedTimeTotal.ToString();
                 }
                 }
         }
